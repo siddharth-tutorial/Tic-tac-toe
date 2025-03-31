@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe Game</title>
+    <style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            font-size: 32px;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+    <div id="board" class="board"></div>
+    <button onclick="resetGame()">Restart Game</button>
+
+    <script>
+        let currentPlayer = 'X';
+        let gameOver = false;
+
+        // Create individual variables for each cell
+        let cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9;
+
+        // Create the game board
+        const boardElement = document.getElementById('board');
+        function createBoard() {
+            boardElement.innerHTML = '';
+            // Create 9 cells and set event listeners for each
+            for (let i = 1; i <= 9; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.setAttribute('data-cell', i);
+                cell.addEventListener('click', handleMove);
+                boardElement.appendChild(cell);
+            }
+        }
+
+        // Handle the player's move
+        function handleMove(event) {
+            if (gameOver) return;
+
+            const cellIndex = event.target.getAttribute('data-cell');
+            if (event.target.textContent !== '') return; // Ignore if the cell is already taken
+
+            // Mark the cell
+            event.target.textContent = currentPlayer;
+
+            // Update the respective cell variable based on the clicked cell
+            if (cellIndex == 1) cell1 = currentPlayer;
+            if (cellIndex == 2) cell2 = currentPlayer;
+            if (cellIndex == 3) cell3 = currentPlayer;
+            if (cellIndex == 4) cell4 = currentPlayer;
+            if (cellIndex == 5) cell5 = currentPlayer;
+            if (cellIndex == 6) cell6 = currentPlayer;
+            if (cellIndex == 7) cell7 = currentPlayer;
+            if (cellIndex == 8) cell8 = currentPlayer;
+            if (cellIndex == 9) cell9 = currentPlayer;
+
+            // Check for a winner
+            if (checkWin()) {
+                alert(currentPlayer + ' wins!');
+                gameOver = true;
+                return;
+            }
+
+            // Check for a draw
+            if (checkDraw()) {
+                alert('It\'s a draw!');
+                gameOver = true;
+                return;
+            }
+
+            // Switch players
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+
+        // Check for a win
+        function checkWin() {
+            // Check rows
+            if (cell1 === currentPlayer && cell2 === currentPlayer && cell3 === currentPlayer) return true;
+            if (cell4 === currentPlayer && cell5 === currentPlayer && cell6 === currentPlayer) return true;
+            if (cell7 === currentPlayer && cell8 === currentPlayer && cell9 === currentPlayer) return true;
+
+            // Check columns
+            if (cell1 === currentPlayer && cell4 === currentPlayer && cell7 === currentPlayer) return true;
+            if (cell2 === currentPlayer && cell5 === currentPlayer && cell8 === currentPlayer) return true;
+            if (cell3 === currentPlayer && cell6 === currentPlayer && cell9 === currentPlayer) return true;
+
+            // Check diagonals
+            if (cell1 === currentPlayer && cell5 === currentPlayer && cell9 === currentPlayer) return true;
+            if (cell3 === currentPlayer && cell5 === currentPlayer && cell7 === currentPlayer) return true;
+
+            return false;
+        }
+
+        // Check for a draw
+        function checkDraw() {
+            return cell1 && cell2 && cell3 && cell4 && cell5 && cell6 && cell7 && cell8 && cell9;
+        }
+
+        // Reset the game
+        function resetGame() {
+            // Reset the cell variables
+            cell1 = cell2 = cell3 = cell4 = cell5 = cell6 = cell7 = cell8 = cell9 = '';
+            currentPlayer = 'X';
+            gameOver = false;
+            createBoard();
+        }
+
+        createBoard(); // Initialize the game board
+    </script>
+</body>
+</html>
